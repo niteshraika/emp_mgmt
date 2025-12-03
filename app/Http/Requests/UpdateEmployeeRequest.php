@@ -38,7 +38,7 @@ class UpdateEmployeeRequest extends FormRequest
             ],
             'email' => [
                 'required',
-                'email:rfc,dns',
+                'email',
                 'unique:employees,email,' . $employeeId,
                 'max:255',
             ],

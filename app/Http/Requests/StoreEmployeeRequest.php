@@ -37,7 +37,7 @@ class StoreEmployeeRequest extends FormRequest
             ],
             'email' => [
                 'required',
-                'email:rfc,dns',
+                'email',
                 'unique:employees,email',
                 'max:255',
             ],

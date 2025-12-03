@@ -228,6 +228,37 @@ npm run dev            # Development watch
 php artisan test
 ```
 
+## Test Results
+
+- Date: 2025-12-03 00:00 UTC
+- Command: php artisan test
+
+Summary
+- Suites: 9
+- Tests: 34
+- Assertions: 130
+- Passed: 34
+- Failed: 0
+- Skipped: 0
+- Duration: 2.56s
+
+Suites
+- Unit
+  - ExampleTest: PASS (1/1)
+- Feature
+  - AuthAndRbacTest: PASS (5/5)
+  - ActivityLogsAndExportsTest: PASS (3/3)
+  - CrudDepartmentsTest: PASS (9/9)
+  - CrudEmployeesTest: PASS (5/5)
+  - CrudUsersTest: PASS (8/8)
+  - ImportFlowTest: PASS (1/1)
+  - SecurityHeadersTest: PASS (1/1)
+  - ExampleTest: PASS (1/1)
+
+Notes
+- Employee email validation accepts any valid email (no domain restriction) in StoreEmployeeRequest and UpdateEmployeeRequest.
+- Employee CRUD tests use referrer context and session assertions for reliable outcomes.
+
 ### Cache Management
 ```bash
 php artisan optimize:clear    # Clear all caches

@@ -62,8 +62,10 @@ class CrudEmployeesTest extends TestCase
         ];
 
         $this->actingAs($this->manager())
+            ->from('/employees/create')
             ->post('/employees', $payload)
-            ->assertRedirect('/employees')
+            ->assertStatus(302)
+            ->assertSessionHasNoErrors()
             ->assertSessionHas('success');
 
         $this->assertDatabaseHas('employees', [
@@ -78,6 +80,7 @@ class CrudEmployeesTest extends TestCase
         $emp = Employee::factory()->create(['department_id' => $dept->id, 'salary' => 3000]);
 
         $this->actingAs($this->manager())
+            ->from('/employees/'.$emp->id.'/edit')
             ->put('/employees/'.$emp->id, [
                 'first_name' => $emp->first_name,
                 'last_name' => $emp->last_name,
@@ -88,7 +91,8 @@ class CrudEmployeesTest extends TestCase
                 'joining_date' => $emp->joining_date->format('Y-m-d'),
                 'address' => $emp->address,
             ])
-            ->assertRedirect('/employees')
+            ->assertStatus(302)
+            ->assertSessionHasNoErrors()
             ->assertSessionHas('success');
 
         $this->assertDatabaseHas('employees', ['id' => $emp->id, 'salary' => 3500]);

@@ -8,6 +8,10 @@ Feature tests cover:
 - Users (admin-only): list, create (RBAC checks)
 - Departments: list, create, show, edit, update, soft-delete, trash, restore (admin), force-delete (admin)
 - Employees: list with filters, create, update, soft-delete, restore (admin), force-delete (admin), bulk delete
+- Authentication & RBAC: login success/failure, Users menu visibility per role, profile page access
+- Activity Logs & Exports: logging on updates/deletes, CSV export headers for employees/departments
+- Import Flow: CSV preview and process happy-path
+- Security Headers: presence of key headers on authenticated pages
 
 Assumptions:
 - Simple RBAC via `role` column on users: admin, manager, viewer
@@ -48,11 +52,24 @@ Common commands:
   - Covers full CRUD lifecycle including soft-deletes and admin-only restore/force-delete.
 - `tests/Feature/CrudEmployeesTest.php`
   - Covers CRUD, filters, bulk delete, and trash flows.
+- `tests/Feature/AuthAndRbacTest.php`
+  - Login page loads, successful/failed authentication, role-based Users menu visibility, profile page availability.
+- `tests/Feature/ActivityLogsAndExportsTest.php`
+  - Activity log entries exist after updates; export endpoints return proper CSV headers.
+- `tests/Feature/ImportFlowTest.php`
+  - CSV import preview and process happy-path creates employees.
+- `tests/Feature/SecurityHeadersTest.php`
+  - Verifies security headers are present on authenticated responses.
 
 ## Expected Outcomes
 - All CRUD flows succeed for allowed roles and fail with proper redirects for restricted roles.
 - Database assertions confirm changes.
 - Soft-deletes verified where applicable.
+- Authentication flow validated with redirects and session errors.
+- Activity logs recorded for key actions.
+- CSV export endpoints respond with correct content headers.
+- Import flow creates expected employees from valid CSV.
+- Security headers applied across authenticated pages.
 
 ## Notes
 - Feature tests use `RefreshDatabase` to isolate state per test.
