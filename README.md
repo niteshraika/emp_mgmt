@@ -304,6 +304,46 @@ php artisan db:seed --class=DatabaseSeeder   # Run specific seeder
 ✓ Activity audit trail
 ✓ Soft deletes for data recovery
 
+## Compliance
+
+This application includes features that support compliance efforts. It does not itself certify compliance; production compliance depends on your deployment, processes, and complementary controls.
+
+Supported obligations and control mappings:
+- GDPR (EU) and CCPA/CPRA (California):
+  - Lawful access and least privilege via RBAC (Admin/Manager/Viewer) and route/middleware authorization.
+  - Data subject request facilitation: soft deletes enable reversible removals; permanent delete endpoints support erasure when authorized.
+  - Purpose limitation and accountability supported by detailed activity logs (who/what/when/where, before/after values).
+  - Security by design: CSRF protection, input validation, SQLi mitigation, and security headers.
+- SOC 2 (Security/Availability/Confidentiality) readiness support:
+  - Access controls (RBAC), authentication throttling, and audit logging for change tracking.
+  - Configuration management via environment variables and versioned migrations/seeders.
+  - Monitoring and alerting can be integrated using application logs and HTTP access logs (infrastructure dependent).
+- PCI DSS adjacency (not a cardholder data system):
+  - No storage of card data in scope by default. If extended, ensure network segmentation, encryption at rest, and key management outside this app.
+
+Implemented technical controls in this repo:
+- Authentication and session security using Laravel’s session and CSRF mechanisms.
+- Rate limiting on login attempts (5/min).
+- Security headers middleware (see app/Http/Middleware/SecurityHeaders.php) to reduce attack surface (X-Frame-Options, X-Content-Type-Options, etc.).
+- Detailed audit trail (ActivityLog model and views) with user attribution, IP, user agent, timestamps, and diff of changes.
+- Soft deletes for reversible removals; permanent delete endpoints restricted by role.
+- Input validation via Form Requests across create/update flows.
+- Output encoding via Blade templates to reduce XSS exposure.
+- CSV import validation and preview to prevent bulk bad data ingestion.
+
+Deployment and configuration responsibilities:
+- Encryption in transit: serve exclusively over HTTPS with modern TLS; configure HSTS in the web server/proxy.
+- Encryption at rest: use encrypted database volumes and managed backups; rotate credentials stored in .env.
+- Logging and retention: route logs to centralized storage (e.g., ELK, CloudWatch) with retention policies that match your regulatory needs; protect logs due to sensitive before/after values.
+- Data retention and deletion: define retention windows for soft-deleted records; use force delete endpoints for erasure requests after approval.
+- Backups and DR: implement periodic, encrypted backups with tested restore procedures.
+- Access control hygiene: provision least-privilege application users and rotate admin accounts; enable MFA at the IdP or reverse proxy layer if applicable.
+
+References:
+- SECURITY.md for hardening guidance and secure development/ops practices.
+- RBAC_GUIDE.md for permissions and roles.
+- CSV_IMPORT_GUIDE.md for data handling considerations during import/export.
+
 ## Support & Troubleshooting
 
 For common issues and solutions, refer to the specific feature guides:
