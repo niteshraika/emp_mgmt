@@ -91,7 +91,7 @@ After seeding, three users are available:
 ```
 Admin User:
   Email: admin@example.com
-  Password: password
+  Password: P@ssw0rd
   Role: admin (full access)
 
 Manager User:
