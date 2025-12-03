@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -44,5 +45,49 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isManager(): bool
+    {
+        return $this->role === 'manager';
+    }
+
+    public function isViewer(): bool
+    {
+        return $this->role === 'viewer';
+    }
+
+    public function hasRole($role): bool
+    {
+        if (is_array($role)) {
+            return in_array($this->role, $role);
+        }
+        return $this->role === $role;
+    }
+
+    public function canDelete(): bool
+    {
+        return in_array($this->role, ['admin', 'manager']);
+    }
+
+    public function canRestore(): bool
+    {
+        return $this->isAdmin();
+    }
+
+    // RBAC helpers for user management
+    public function canManageUsers(): bool
+    {
+        return $this->isAdmin();
+    }
+
+    public function canCreateUsers(): bool
+    {
+        return $this->isAdmin();
     }
 }

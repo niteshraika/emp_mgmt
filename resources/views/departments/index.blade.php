@@ -6,7 +6,10 @@
 <div class="card">
     <div class="card-header flex justify-between items-center">
         <h3 class="text-lg font-medium">Departments</h3>
-        <a href="{{ route('departments.create') }}" class="btn btn-primary" style="padding: 0.375rem 0.75rem; font-size: 0.8125rem;">+ Add</a>
+        <div class="flex gap-2" style="gap: 0.5rem;">
+            <a href="{{ route('departments.export', request()->query()) }}" class="btn btn-secondary" style="padding: 0.375rem 0.75rem; font-size: 0.8125rem;">↓ Export CSV</a>
+            <a href="{{ route('departments.create') }}" class="btn btn-primary" style="padding: 0.375rem 0.75rem; font-size: 0.8125rem;">+ Add</a>
+        </div>
     </div>
     
     <!-- Filters -->
@@ -31,6 +34,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Description</th>
+                        <th style="width: 120px; text-align: center;">Employees</th>
                         <th style="width: 100px;">Actions</th>
                     </tr>
                 </thead>
@@ -39,6 +43,7 @@
                     <tr>
                         <td class="font-medium">{{ $department->name }}</td>
                         <td class="text-gray" style="font-size: 0.875rem;">{{ $department->description ?? '—' }}</td>
+                        <td style="text-align: center; font-weight: 500; color: var(--primary);">{{ $department->employees_count }}</td>
                         <td>
                             <div class="flex gap-1" style="gap: 0.25rem;">
                                 <a href="{{ route('departments.edit', $department) }}" class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Edit</a>
